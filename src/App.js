@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import './App.css';
+import SingleCard from './components/SingleCard';
 
 const cardImages = [
   { "src" : "/img/helmet-1.png" },
@@ -10,10 +12,29 @@ const cardImages = [
 ]
 
 function App() {
+  const [cards, setCards] = useState([])
+  const [turns, setTurns] = useState(0)
+
+  const shuffleCards = () => {
+    const shuffledCards = [...cardImages, ...cardImages]
+      .sort(() => Math.random() - 0.5)
+      .map((card) => ( {...card, id: Math.random()} ))
+
+    setCards(shuffledCards)
+    setTurns(0)
+  }
+
+  console.log(cards,turns)
+
   return (
     <div className="App">
       <h1>Magic Memory</h1>
-      <button>New Game</button>
+      <button onClick={shuffleCards}>New Game</button>
+      <div className="card-grid">
+        {cards.map(card => (
+          <SingleCard key={card.id} card={card}/>
+        ))}
+      </div>
     </div>
   );
 }
